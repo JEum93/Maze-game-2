@@ -13,6 +13,8 @@ import com.badlogic.gdx.utils.ScreenUtils;
  */
 public class GameScreen implements Screen {
 
+    // testing please work
+
     private final MazeRunnerGame game;
     private final OrthographicCamera camera;
     private final BitmapFont font;
