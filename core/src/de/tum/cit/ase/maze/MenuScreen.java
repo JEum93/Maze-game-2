@@ -41,7 +41,7 @@ public class MenuScreen implements Screen {
         table.add(new Label("Hello World from the Menu!", game.getSkin(), "title")).padBottom(80).row();
 
         // Create and add a button to go to the game screen
-        TextButton goToGameButton = new TextButton("Go To Game", game.getSkin());
+        TextButton goToGameButton = new TextButton("Start a game", game.getSkin());
         table.add(goToGameButton).width(300).row();
         goToGameButton.addListener(new ChangeListener() {
             @Override
@@ -49,6 +49,19 @@ public class MenuScreen implements Screen {
                 game.goToGame(); // Change to the game screen when button is pressed
             }
         });
+        TextButton addMapButton = new TextButton("Load map", game.getSkin()); // I have created a button
+        table.add(addMapButton).width(300).row();
+        TextButton continueButton = new TextButton("Continue", game.getSkin()); // I have created a button
+        table.add(continueButton).width(300).row();
+        TextButton exitButton = new TextButton("Exit", game.getSkin()); // I have created a button
+        table.add(exitButton).width(300).row();
+        exitButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                System.exit(0); // Exit the game when the button is pressed when button is pressed
+            }
+        });
+
     }
 
     @Override
