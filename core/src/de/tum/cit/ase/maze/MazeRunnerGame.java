@@ -122,4 +122,13 @@ public class MazeRunnerGame extends Game {
     public SpriteBatch getSpriteBatch() {
         return spriteBatch;
     }
+    NativeFileChooser fileChooser;
+
+    /**
+     * Sets the screen to the GameScreen with the provided maze data.
+     *
+     * @param mazeData The maze data to be used in the game.
+     */
+
+
 }

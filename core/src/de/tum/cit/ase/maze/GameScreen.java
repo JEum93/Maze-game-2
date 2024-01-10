@@ -130,6 +130,5 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
     }
-
     // Additional methods and logic can be added as needed for the game screen
 }
