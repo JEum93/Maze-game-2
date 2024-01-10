@@ -49,7 +49,7 @@ public class MenuScreen implements Screen {
         table.add(new Label("Hello World from the Menu!", game.getSkin(), "title")).padBottom(80).row();
 
         // Create and add a button to go to the game screen
-        TextButton goToGameButton = new TextButton("Go To Game", game.getSkin());
+        TextButton goToGameButton = new TextButton("Start a game", game.getSkin());
         table.add(goToGameButton).width(300).row();
         goToGameButton.addListener(new ChangeListener() {
             @Override
@@ -57,6 +57,7 @@ public class MenuScreen implements Screen {
                 game.goToGame(); // Change to the game screen when button is pressed
             }
         });
+ files
         TextButton fileGameButton = new TextButton("File", game.getSkin());
         table.add(fileGameButton).width(300).row();
         fileGameButton.addListener(new ChangeListener() {
@@ -73,6 +74,9 @@ public class MenuScreen implements Screen {
                 Gdx.app.exit(); // Exits the app when button is pressed
             }
         });
+
+
+
     }
 
     @Override
