@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.ScreenUtils;
 
@@ -13,11 +14,14 @@ import com.badlogic.gdx.utils.ScreenUtils;
  */
 public class GameScreen implements Screen {
 
-    // testing please work
-
     private final MazeRunnerGame game;
     private final OrthographicCamera camera;
     private final BitmapFont font;
+
+    // adding variables that can store character's position + movement speed
+    private float playerX;
+    private float playerY;
+    private float playerSpeed;
 
     private float sinusInput = 0f;
 
@@ -36,16 +40,23 @@ public class GameScreen implements Screen {
 
         // Get the font from the game's skin
         font = game.getSkin().getFont("font");
-    }
 
+        // initialize added variables above
+        playerX = 200f;
+        playerY = 200f;
+        playerSpeed = 200f;
+    }
 
     // Screen interface methods with necessary functionality
     @Override
     public void render(float delta) {
+
         // Check for escape key press to go back to the menu
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             game.goToMenu();
         }
+
+        handlePlayerMovement(delta);
 
         ScreenUtils.clear(0, 0, 0, 1); // Clear the screen
 
@@ -58,7 +69,6 @@ public class GameScreen implements Screen {
 
         // Set up and begin drawing with the sprite batch
         game.getSpriteBatch().setProjectionMatrix(camera.combined);
-
         game.getSpriteBatch().begin(); // Important to call this before drawing anything
 
         // Render the text
@@ -74,6 +84,25 @@ public class GameScreen implements Screen {
         );
 
         game.getSpriteBatch().end(); // Important to call this after drawing everything
+    }
+
+    //method for handling keyboard input for the movement of character
+    private void handlePlayerMovement(float delta){
+
+        //below are libgdx lingo where it checks if the left, right, up or down key is being pressed
+        // when pressed the character's position is updated by subtracting the delta and playerspeed from the current position
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            playerX -= delta * playerSpeed;
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            playerX += delta * playerSpeed;
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            playerY += delta * playerSpeed;
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+            playerY -= delta * playerSpeed;
+        }
     }
 
     @Override
