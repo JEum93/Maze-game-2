@@ -13,6 +13,12 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+
 /**
  * The MenuScreen class is responsible for displaying the main menu of the game.
  * It extends the LibGDX Screen class and sets up the UI components for the menu.
@@ -20,6 +26,8 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 public class MenuScreen implements Screen {
 
     private final Stage stage;
+    private MazeRunnerGame game;
+    private GameScreen screen;
 
     /**
      * Constructor for MenuScreen. Sets up the camera, viewport, stage, and UI elements.
@@ -47,6 +55,22 @@ public class MenuScreen implements Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 game.goToGame(); // Change to the game screen when button is pressed
+            }
+        });
+        TextButton fileGameButton = new TextButton("File", game.getSkin());
+        table.add(fileGameButton).width(300).row();
+        fileGameButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                game.goToGame();
+            }
+        });
+        TextButton exitGameButton = new TextButton("Exit", game.getSkin());
+        table.add(exitGameButton).width(300).row();
+        exitGameButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                Gdx.app.exit(); // Exits the app when button is pressed
             }
         });
     }
