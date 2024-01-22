@@ -5,7 +5,9 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 /**
@@ -17,13 +19,13 @@ public class GameScreen implements Screen {
     private final MazeRunnerGame game;
     private final OrthographicCamera camera;
     private final BitmapFont font;
+    private float sinusInput = 0f;
+
 
     // adding variables that can store character's position + movement speed
-    private float playerX;
-    private float playerY;
+    private float playerx;
+    private float playery;
     private float playerSpeed;
-
-    private float sinusInput = 0f;
 
     /**
      * Constructor for GameScreen. Sets up the camera and font.
@@ -42,8 +44,8 @@ public class GameScreen implements Screen {
         font = game.getSkin().getFont("font");
 
         // initialize added variables above
-        playerX = 200f;
-        playerY = 200f;
+        playerx = 200f;
+        playery = 200f;
         playerSpeed = 200f;
     }
 
@@ -56,8 +58,6 @@ public class GameScreen implements Screen {
             game.goToMenu();
         }
 
-        handlePlayerMovement(delta);
-
         ScreenUtils.clear(0, 0, 0, 1); // Clear the screen
 
         camera.update(); // Update the camera
@@ -69,40 +69,78 @@ public class GameScreen implements Screen {
 
         // Set up and begin drawing with the sprite batch
         game.getSpriteBatch().setProjectionMatrix(camera.combined);
+
+        //movment controls
+
+        //last key pressed
+        String direction = "";
+
+        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+            System.out.println("W");
+            direction = "W";
+            playery += Gdx.graphics.getDeltaTime() * playerSpeed;
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+            System.out.println("S");
+            direction = "S";
+            playery -= Gdx.graphics.getDeltaTime() * playerSpeed;
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+            System.out.println("A");
+            direction = "A";
+            playerx -= Gdx.graphics.getDeltaTime() * playerSpeed;
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+            System.out.println("D");
+            direction = "D";
+            playerx += Gdx.graphics.getDeltaTime() * playerSpeed;
+        }
+
         game.getSpriteBatch().begin(); // Important to call this before drawing anything
 
         // Render the text
         font.draw(game.getSpriteBatch(), "Press ESC to go to menu", textX, textY);
 
         // Draw the character next to the text :) / We can reuse sinusInput here
-        game.getSpriteBatch().draw(
-                game.getCharacterDownAnimation().getKeyFrame(sinusInput, true),
-                textX - 96,
-                textY - 64,
-                64,
-                128
-        );
+
+            game.getSpriteBatch().draw(
+                    game.getCharacterDownAnimation().getKeyFrame(sinusInput, true),
+                    textX - 96,
+                    textY - 64,
+                    64,
+                    128
+            );
+
+        if(Gdx.input.isKeyPressed(Input.Keys.D)) {
+            game.getSpriteBatch().draw(
+                    game.getCharacterUpAnimation().getKeyFrame(sinusInput, true),
+                    textX - 96,
+                    textY - 64,
+                    64,
+                    128
+            );
+        }
+
+        if(Gdx.input.isKeyPressed(Input.Keys.W)) {
+            game.getSpriteBatch().draw(
+                    game.getCharacterLeftAnimation().getKeyFrame(sinusInput, true),
+                    textX - 96,
+                    textY - 64,
+                    64,
+                    128
+            );
+
+        }if(Gdx.input.isKeyPressed(Input.Keys.A)) {
+            game.getSpriteBatch().draw(
+                    game.getCharacterRightAnimation().getKeyFrame(sinusInput, true),
+                    textX - 96,
+                    textY - 64,
+                    64,
+                    128
+            );
+        }
 
         game.getSpriteBatch().end(); // Important to call this after drawing everything
-    }
-
-    //method for handling keyboard input for the movement of character
-    private void handlePlayerMovement(float delta){
-
-        //below are libgdx lingo where it checks if the left, right, up or down key is being pressed
-        // when pressed the character's position is updated by subtracting the delta and playerspeed from the current position
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            playerX -= delta * playerSpeed;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            playerX += delta * playerSpeed;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            playerY += delta * playerSpeed;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            playerY -= delta * playerSpeed;
-        }
     }
 
     @Override
@@ -120,7 +158,6 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
-
     }
 
     @Override
