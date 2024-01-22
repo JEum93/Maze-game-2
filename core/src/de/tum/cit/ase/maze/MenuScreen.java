@@ -57,7 +57,7 @@ public class MenuScreen implements Screen {
                 game.goToGame(); // Change to the game screen when button is pressed
             }
         });
- files
+
         TextButton fileGameButton = new TextButton("File", game.getSkin());
         table.add(fileGameButton).width(300).row();
         fileGameButton.addListener(new ChangeListener() {
