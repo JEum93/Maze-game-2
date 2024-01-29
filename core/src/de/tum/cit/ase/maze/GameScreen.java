@@ -99,7 +99,7 @@ public class GameScreen implements Screen {
         // looping true makes our character have the leg walking animation
         // Time variables for each direction
 
-        game.getSpriteBatch().end(); // Important to call this after drawing everything
+        //game.getSpriteBatch().end(); // Important to call this after drawing everything
     }
 
     @Override

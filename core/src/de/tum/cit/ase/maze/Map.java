@@ -133,21 +133,23 @@ public class Map {
                 if(cell.cellType == null){
                     texturize(batch,cell,mapSheet.getTexture(11));
                 }
-                switch (cell.cellType) {
-                    case WALL:
-                        texturize(batch, cell, mapSheet.getTexture(8));
-                        break;
-                    case ENTRY_POINT:
-                        texturize(batch, cell, mapSheet.getTexture(11));
-                        break;
-                    case EXIT:
-                        texturize(batch, cell, mapSheet.getTexture(36));
-                        break;
-                    case TRAP:
-                    case ENEMY:
-                    case KEY:
-                        texturize(batch, cell, mapSheet.getTexture(11));
-                        break;
+                else {
+                    switch (cell.cellType) {
+                        case WALL:
+                            texturize(batch, cell, mapSheet.getTexture(8));
+                            break;
+                        case ENTRY_POINT:
+                            texturize(batch, cell, mapSheet.getTexture(11));
+                            break;
+                        case EXIT:
+                            texturize(batch, cell, mapSheet.getTexture(36));
+                            break;
+                        case TRAP:
+                        case ENEMY:
+                        case KEY:
+                            texturize(batch, cell, mapSheet.getTexture(11));
+                            break;
+                    }
                 }
             }
         }
