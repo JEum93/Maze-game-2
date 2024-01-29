@@ -51,6 +51,7 @@ public class GameScreen implements Screen {
     public GameScreen(MazeRunnerGame game, String mapPath, int score, int time) {
         this.game = game;
         this.score = score;
+
         this.time = time;
         this.heartCount = 5;
         this.key = 0;
