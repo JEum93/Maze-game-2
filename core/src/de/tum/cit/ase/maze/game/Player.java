@@ -1,5 +1,6 @@
 package de.tum.cit.ase.maze.game;
 
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import de.tum.cit.ase.maze.utils.SpriteSheet;
@@ -56,6 +57,70 @@ public class Player extends Entity {
         // character facing direction is initialized as 1,0 coordinates initially starting into the game looking to the right
         facingDir = new Vector2(1, 0);
     }
+
+    // onKeyUp is part 1 of the character movement, it is used for when the movement key is no longer pressed
+    public void onKeyUp(int keycode) {
+
+        // Here we use values of -1, 1 and 0, -1 being leftwards movement, 1 rightward movement and 0 meaning no horizontal movement
+        // In the first case of the switch statements if (dir.x == -1) is the condition of releasing the left arrow key
+        // Input.keys.Left indicates the character was moving leftwards initially however it is then set to dir.x = 0
+        // stopping horizontal movement as in the character becomes stasis
+        // the rest follows the same logic
+
+        switch (keycode) {
+            case Input.Keys.LEFT:
+                if (dir.x == -1) {
+                    dir.x = 0;
+                }
+            case Input.Keys.RIGHT:
+                if (dir.x == 1) {
+                    dir.x = 0;
+                }
+                break;
+            case Input.Keys.UP:
+                if (dir.y == 1) {
+                    dir.y = 0;
+                }
+                break;
+            case Input.Keys.DOWN:
+                if (dir.y == -1) {
+                    dir.y = 0;
+                }
+        }
+    }
+
+    // OnKeyDown is part 2 of the character movement, it is whn the movement keys are actually pressed
+
+    // The code is quite simple when left arrow key is pressed indicated by the Input.keys.Left
+    // the direction of the character is updated as a new Vector2 (-1, 0) once again -1 is leftward movement and 0 is no movement
+    // the sheet which brings the animation of the character facing some direction is updated to walkSheet_left making the player
+    // turn left
+    // facingDir vector is set to the current direction which preserves the information about the facing direction
+    public void onKeyDown(int keycode) {
+        switch(keycode) {
+            case Input.Keys.LEFT:
+                dir = new Vector2(-1,0);
+                sheet = walkSheet_left;
+                facingDir = new Vector2(dir.x,dir.y);
+                break;
+            case Input.Keys.RIGHT:
+                dir = new Vector2(1,0);
+                sheet = walkSheet_right;
+                facingDir = new Vector2(dir.x,dir.y);
+                break;
+            case Input.Keys.UP:
+                dir = new Vector2(0,1);
+                sheet = walkSheet_up;
+                facingDir = new Vector2(dir.x,dir.y);
+                break;
+            case Input.Keys.DOWN:
+                dir = new Vector2(0,-1);
+                sheet = walkSheet_down;
+                facingDir = new Vector2(dir.x,dir.y);
+                break;
+        }
+    }
+
 }
 
 
