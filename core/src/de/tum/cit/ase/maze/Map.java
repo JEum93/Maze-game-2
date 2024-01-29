@@ -100,6 +100,7 @@ public class Map {
                     case WALL:
                         break;
                 }
+                System.out.println(cell.cellType);
             }
             // if the current cell type is either null or enemy we make it a base cell so a floor piece
             for (int row = 0; row < rows; row++) {
@@ -128,6 +129,10 @@ public class Map {
         for(int row = 0; row < rows;row++) {
             for (int col = 0; col < cols; col++) {
                 Cell cell = grid[row][col];
+                //rendering the cell type based on the frame from basic tiles
+                if(cell.cellType == null){
+                    texturize(batch,cell,mapSheet.getTexture(11));
+                }
                 switch (cell.cellType) {
                     case WALL:
                         texturize(batch, cell, mapSheet.getTexture(8));

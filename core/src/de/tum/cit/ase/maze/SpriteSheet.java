@@ -17,7 +17,18 @@ public class SpriteSheet {
         this.texture = texture;
         this.rows = rows;
         this.cols = cols;
+
         frames = new TextureRegion[rows * cols];
+        TextureRegion[][] tmp = TextureRegion.split(texture, texture.getWidth() / cols, texture.getHeight() / rows);  // split the sprite sheet
+        width = texture.getWidth() / cols;
+        height =  texture.getHeight() / rows;
+        int ide = 0;
+        for(int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                frames[ide] = tmp[i][j];
+                ide++;
+            }
+        }
     }
     public TextureRegion getTexture(int frame) {
         return frames[frame];
