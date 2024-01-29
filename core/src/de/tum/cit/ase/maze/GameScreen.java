@@ -39,6 +39,7 @@ public class GameScreen implements Screen {
     private Stage stage;
     Batch batch;
     Map map;
+    boolean gamePause = false;
 
     List<Entity> elements; // we will use this to store our game elements(entities)
 
@@ -47,7 +48,7 @@ public class GameScreen implements Screen {
      *
      * @param game The main game class, used to access global resources and methods.
      */
-    public GameScreen(MazeRunnerGame game) {
+    public GameScreen(MazeRunnerGame game, String mapPath, int score, int time) {
         this.game = game;
         this.score = score;
         this.time = time;
@@ -68,17 +69,14 @@ public class GameScreen implements Screen {
     // Screen interface methods with necessary functionality
     @Override
     public void render(float delta) {
-
-
         // Check for escape key press to go back to the menu
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             game.goToMenu();
+            gamePause = !gamePause;
         }
-
         ScreenUtils.clear(0, 0, 0, 1); // Clear the screen
 
         camera.update(); // Update the camera
-
 
         // Move text in a circular path to have an example of a moving object
         //sinusInput += delta;
@@ -93,79 +91,12 @@ public class GameScreen implements Screen {
         //last key pressed
         String direction = "";
 
-        if (Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            direction = "W";
-            playery += Gdx.graphics.getDeltaTime() * playerSpeed;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.S) || Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            direction = "S";
-            playery -= Gdx.graphics.getDeltaTime() * playerSpeed;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            direction = "A";
-            playerx -= Gdx.graphics.getDeltaTime() * playerSpeed;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            direction = "D";
-            playerx += Gdx.graphics.getDeltaTime() * playerSpeed;
-        }
-
         game.getSpriteBatch().begin(); // Important to call this before drawing anything
         //rendering the actual map
-        for (int i = 0; i < map.length; i++) {
-            for (int j = 0; j < map[i].length; j++) {
-                int mapValue = map[i][j];
-                if (mapValue >= 0 && mapValue < tileset.length) {
-                    float tileX = j * TILE_WIDTH;
-                    float tileY = i * TILE_HEIGHT;
-                    game.getSpriteBatch().draw(tileset[mapValue], tileX, tileY);
-                }
-            }
-        }
-
-        // Render the text
-        77font.draw(game.getSpriteBatch(), "THIS IS less GAY", playerx, playery);
-
+        map.draw(batch);
         // Draw the character next to the text :) / We can reuse sinusInput here
         // looping true makes our character have the leg walking animation
         // Time variables for each direction
-
-        game.getSpriteBatch().draw(
-                    game.getCharacterDownAnimation().getKeyFrame(sinusInput, true),
-                    playerx - 96,
-                    playery - 64,
-                    64,
-                    128
-            );
-
-        if(Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            game.getSpriteBatch().draw(
-                    game.getCharacterUpAnimation().getKeyFrame(sinusInput, true),
-                    playerx - 96,
-                    playery - 64,
-                    64,
-                    128
-            );
-        }
-
-        if(Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            game.getSpriteBatch().draw(
-                    game.getCharacterLeftAnimation().getKeyFrame(sinusInput, true),
-                    playerx - 96,
-                    playery - 64,
-                    64,
-                    128
-            );
-
-        }if(Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            game.getSpriteBatch().draw(
-                    game.getCharacterRightAnimation().getKeyFrame(sinusInput, true),
-                    playerx - 96,
-                    playery - 64,
-                    64,
-                    128
-            );
-        }
 
         game.getSpriteBatch().end(); // Important to call this after drawing everything
     }

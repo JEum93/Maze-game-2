@@ -54,7 +54,7 @@ public class MenuScreen implements Screen {
         goToGameButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                game.goToGame(); // Change to the game screen when button is pressed
+                game.goToGame("maps/level-1.properties", 0, 0); // Change to level 1 as initial game with 0 score and time
             }
         });
 
@@ -63,7 +63,7 @@ public class MenuScreen implements Screen {
         fileGameButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                game.goToGame();
+                game.loadGame();
             }
         });
         TextButton exitGameButton = new TextButton("Exit", game.getSkin());

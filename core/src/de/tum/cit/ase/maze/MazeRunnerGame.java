@@ -73,12 +73,13 @@ public class MazeRunnerGame extends Game {
     /**
      * Switches to the game screen.
      */
-    public void goToGame() {
-        this.setScreen(new GameScreen(this)); // Set the current screen to GameScreen
-        if (menuScreen != null) {
-            menuScreen.dispose(); // Dispose the menu screen if it exists
-            menuScreen = null;
-        }
+    public void goToGame(String mapPath, int score, int time) {
+        gameScreen = new GameScreen(this, mapPath, score, time);
+        this.setScreen(gameScreen);
+    }
+    //load game method which uses native file chooser to load in a map from a.properties file
+    public void loadGame(){
+
     }
 
     /**

@@ -1,6 +1,7 @@
 package de.tum.cit.ase.maze;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import de.tum.cit.ase.maze.SpriteSheet;
@@ -15,7 +16,7 @@ import static de.tum.cit.ase.maze.CellType.*;
 
 public class Map {
     private int rows; // rows and columns for the size of our map grid
-    private int columns; // rows and columns for the size of our map grid
+    private int cols; // rows and columns for the size of our map grid
     private SpriteSheet mapSheet; // creating spite sheet which will be used to choose tiles for our game
     int cellSize = 16; //defining our cell size
     Cell entryCell; //our entry and exit points
@@ -29,7 +30,7 @@ public class Map {
     public Map(String path, List<Entity> entities) {
         mapSheet = new SpriteSheet(new Texture("basictiles.png"), 15, 8); //making basic tiles our sprite sheet
         baseCells = new ArrayList<>();
-        columns = 0;
+        cols = 0;
         rows = 0;
         random = new Random();
         Properties properties = new Properties();
@@ -46,22 +47,22 @@ public class Map {
                 } catch (Exception exception) {
                     continue;
                 }
-                int columns = Integer.parseInt(key.split(",")[0]); //parsing for the column
+                int col = Integer.parseInt(key.split(",")[0]); //parsing for the column
                 int row = Integer.parseInt(key.split(",")[1]); // parsing for the row
-                if (columns > columns) {
-                    columns = columns; // update the calue of columns and rows if the value is greater that way we have the correct number of columns and rows
+                if (col > cols) {
+                    cols = col; // update the calue of columns and rows if the value is greater that way we have the correct number of columns and rows
                 }
                 if (row > rows) {
                     rows = row;
                 }
             }
-            columns += 1;
+            cols += 1;
             rows += 1;
-            grid = new Cell[rows][columns]; // initializing the grid for our map based on the previously calculated row and column dimensions
+            grid = new Cell[rows][cols]; // initializing the grid for our map based on the previously calculated row and column dimensions
             // using a nested for loop to go over the number of rows and columns to add them to the grid, currently our cell type is still null
             for (int row = 0; row < rows; row++) {
-                grid[row] = new Cell[columns];
-                for (int col = 0; col < columns; col++) {
+                grid[row] = new Cell[cols];
+                for (int col = 0; col < cols; col++) {
                     grid[row][col] = new Cell(row, col, null);
                 }
             }
@@ -77,9 +78,9 @@ public class Map {
                 } catch (Exception exception) {
                     continue;
                 }
-                int column = Integer.parseInt(key.split(",")[0]); //parsing for the column
+                int col = Integer.parseInt(key.split(",")[0]); //parsing for the column
                 int row = Integer.parseInt(key.split(",")[1]); // parsing for the row
-                Cell cell = grid[row][column]; //initlaizing cell from cell class
+                Cell cell = grid[row][col]; //initlaizing cell from cell class
                 cell.cellType = CellType.getValue(value);
                 //setting the current cells to either entry or exit point
                 switch (cell.cellType) {
@@ -102,7 +103,7 @@ public class Map {
             }
             // if the current cell type is either null or enemy we make it a base cell so a floor piece
             for (int row = 0; row < rows; row++) {
-                for (int col = 0; col < columns; col++) {
+                for (int col = 0; col < cols; col++) {
                     if (grid[row][col].cellType == null || grid[row][col].cellType == CellType.ENEMY) {
                         baseCells.add(grid[row][col]);
                     }
@@ -117,28 +118,31 @@ public class Map {
     // this method will be used to choose a cell and draw it so add its texture
     // batch is used for rendering
     private void texturize(Batch batch, Cell cell, TextureRegion textureRegion){
-        batch.draw(textureRegion, rows, columns);
+        batch.draw(textureRegion, position.x + cell.col * cellSize,position.y + cell.row * cellSize,mapSheet.getWidth()/2,mapSheet.getHeight()/2,mapSheet.getWidth(),mapSheet.getHeight(),1,1,0);
     }
     //we will now use the texturize function to draw the elemets of our map, finally
     public void draw(Batch batch){
+        batch.end();
         batch.begin();
-        for(int col = 0; col < columns;col++) {
-            Cell cell = grid[rows][col];
-            switch (cell.cellType) {
-                case WALL:
-                    texturize(batch, cell, mapSheet.getTexture(8));
-                    break;
-                case ENTRY_POINT:
-                    texturize(batch, cell, mapSheet.getTexture(11));
-                    break;
-                case EXIT:
-                    texturize(batch, cell, mapSheet.getTexture(36));
-                    break;
-                case TRAP:
-                case ENEMY:
-                case KEY:
-                    texturize(batch, cell, mapSheet.getTexture(11));
-                    break;
+        for(int row = 0; row < rows;row++) {
+            for (int col = 0; col < cols; col++) {
+                Cell cell = grid[row][col];
+                switch (cell.cellType) {
+                    case WALL:
+                        texturize(batch, cell, mapSheet.getTexture(8));
+                        break;
+                    case ENTRY_POINT:
+                        texturize(batch, cell, mapSheet.getTexture(11));
+                        break;
+                    case EXIT:
+                        texturize(batch, cell, mapSheet.getTexture(36));
+                        break;
+                    case TRAP:
+                    case ENEMY:
+                    case KEY:
+                        texturize(batch, cell, mapSheet.getTexture(11));
+                        break;
+                }
             }
         }
         batch.end();
@@ -159,11 +163,11 @@ public class Map {
     }
 
     public int getColumns() {
-        return columns;
+        return cols;
     }
 
     public void setColumns(int columns) {
-        this.columns = columns;
+        this.cols = columns;
     }
 
     public SpriteSheet getMapSheet() {
