@@ -89,7 +89,6 @@ public class Player extends Entity {
         }
     }
 
-   // some reason did not go through will push again
 
     // OnKeyDown is part 2 of the character movement, it is whn the movement keys are actually pressed
 
