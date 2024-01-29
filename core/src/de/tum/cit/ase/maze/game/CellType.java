@@ -1,4 +1,4 @@
-package de.tum.cit.ase.maze;
+package de.tum.cit.ase.maze.game;
 
 public enum CellType {
     // defining the types of cells we have

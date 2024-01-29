@@ -1,5 +1,5 @@
-package de.tum.cit.ase.maze;
-import de.tum.cit.ase.maze.Square;
+package de.tum.cit.ase.maze.game;
+import de.tum.cit.ase.maze.utils.Rectangle;
 public class Cell {
     public int row; //this will be the index of the row a certain cell will be in same for column
     public int column;
@@ -12,7 +12,7 @@ public class Cell {
         this.cellType = cellType;
     }
 
-    public Square getSquare(){
-        return new Square(column * 16,row * 16,16,16); //defining cell size based on the square class
+    public Rectangle getSquare(){
+        return new Rectangle(column * 16,row * 16,16,16); //defining cell size based on the square class
     }
 }
