@@ -4,21 +4,17 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
-import java.awt.*;
+import javax.swing.text.html.parser.Entity;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
-
+import java.util.*;
+import java.util.List;
 
 
 /**
@@ -31,25 +27,20 @@ public class GameScreen implements Screen {
     private final OrthographicCamera camera;
     private final BitmapFont font;
     private float sinusInput = 0f;
+    private Viewport viewport;
 
+    // adding game element
+    private int score;
+    private float time;
+    private int heartCount;
+    private int key;
+    private String mapPath;
+    private int level;
+    private Stage stage;
+    Batch batch;
+    Map map;
 
-    // adding variables that can store character's position + movement speed
-    private float playerx;
-    private float playery;
-    private float playerSpeed;
-
-    // variables for the map
-    public static final int WALL = 0;
-    public static final int ENTRY_POINT = 1;
-    public static final int EXIT = 2;
-    public static final int TRAP = 3;
-    public static final int ENEMY = 4;
-    public static final int KEY = 5;
-
-    private int[][] map; // Adding this variable to store the map data
-    private TextureRegion[] tileset; // Adding this to texture the map
-    private static final int TILE_WIDTH = 96;
-    private static final int TILE_HEIGHT = 96;
+    List<Entity> elements; // we will use this to store our game elements(entities)
 
     /**
      * Constructor for GameScreen. Sets up the camera and font.
@@ -58,61 +49,20 @@ public class GameScreen implements Screen {
      */
     public GameScreen(MazeRunnerGame game) {
         this.game = game;
-        loadMap("level-2.properties");
-        Texture texture = new Texture("mobs.png");
-        TextureRegion[][] tmp = TextureRegion.split(texture, TILE_WIDTH, TILE_HEIGHT);
-        int tilesetCols = tmp[0].length;
-        int tilesetRows = tmp.length;
-
-        // Flatten 2D array into a 1D array
-        tileset = new TextureRegion[tilesetCols * tilesetRows];
-        int index = 0;
-        for (int i = 0; i < tilesetRows; i++) {
-            for (int j = 0; j < tilesetCols; j++) {
-                tileset[index++] = tmp[i][j];
-            }
-        }
-
+        this.score = score;
+        this.time = time;
+        this.heartCount = 5;
+        this.key = 0;
+        elements = new ArrayList<>();
+        level = mapPath.split("-")[1].charAt(0) - '0'; // extracting the map level from the path provided
+        stage = new Stage(); //creating a stage for ui elements such as buttons ect
         // Create and configure the camera for the game view
         camera = new OrthographicCamera();
         camera.setToOrtho(false);
         camera.zoom = 0.75f;
-
-        // Get the font from the game's skin
-        font = game.getSkin().getFont("font");
-
-        // initialize added variables above
-        playerx = 200f;
-        playery = 200f;
-        playerSpeed = 200f;
-    }
-    private void loadMap(String fileName) {
-        try {
-            Properties properties = new Properties();
-            InputStream input = Gdx.files.internal("maps/" + fileName).read();
-            if (input == null) {
-                throw new FileNotFoundException("File not found: " + fileName);
-            }
-            System.out.println(fileName);
-            properties.load(input);
-
-            // Assuming the map size is fixed, you can modify this based on your actual requirements
-            int rows = 99;
-            int cols = 99;
-
-            map = new int[rows][cols];
-
-            // Iterate through the properties and populate the map array
-            for (String key : properties.stringPropertyNames()) {
-                String[] coordinates = key.split(",");
-                int x = Integer.parseInt(coordinates[0]);
-                int y = Integer.parseInt(coordinates[1]);
-                int value = Integer.parseInt(properties.getProperty(key));
-                map[x][y] = value;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        font = game.getSkin().getFont("font"); // Get the font from the game's skin
+        batch = game.getSpriteBatch(); //using sprite batch for renderig
+        map = new Map(mapPath, elements);
     }
 
     // Screen interface methods with necessary functionality
@@ -174,7 +124,7 @@ public class GameScreen implements Screen {
         }
 
         // Render the text
-        font.draw(game.getSpriteBatch(), "THIS IS less GAY", playerx, playery);
+        77font.draw(game.getSpriteBatch(), "THIS IS less GAY", playerx, playery);
 
         // Draw the character next to the text :) / We can reuse sinusInput here
         // looping true makes our character have the leg walking animation
