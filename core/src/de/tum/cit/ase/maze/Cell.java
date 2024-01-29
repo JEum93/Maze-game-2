@@ -4,6 +4,7 @@ public class Cell {
     public int row; //this will be the index of the row a certain cell will be in same for column
     public int col;
 
+
     public CellType cellType; //this is the cell type the cell will have defined in cell type enum class
 
     public Cell(int row, int column, CellType cellType) {

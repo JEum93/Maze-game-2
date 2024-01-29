@@ -9,5 +9,6 @@ public class Square {
         this.y = y;
         this.w = w;
         this.h = h;
+
     }
 }

@@ -123,6 +123,7 @@ public class Map {
     //we will now use the texturize function to draw the elemets of our map, finally
     public void draw(Batch batch){
         batch.end();
+
         batch.begin();
         for(int row = 0; row < rows;row++) {
             for (int col = 0; col < cols; col++) {

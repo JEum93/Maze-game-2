@@ -12,6 +12,7 @@ public class SpriteSheet {
     TextureRegion[] frames; // we use this to choose and store the pictures from our selected file
     int width,height;
 
+
     public SpriteSheet(Texture texture, int rows, int cols) {
         this.texture = texture;
         this.rows = rows;

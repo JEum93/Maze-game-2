@@ -8,6 +8,7 @@ public enum CellType {
     KEY,
     EXIT,
     ENEMY;
+
     // giving cell types the value which will be present in the .properties file
     public static CellType getValue(int x){
         switch(x) {
