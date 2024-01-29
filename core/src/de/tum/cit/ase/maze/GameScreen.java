@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import javax.swing.text.html.parser.Entity;
@@ -59,12 +60,13 @@ public class GameScreen implements Screen {
         level = mapPath.split("-")[1].charAt(0) - '0'; // extracting the map level from the path provided
         stage = new Stage(); //creating a stage for ui elements such as buttons ect
         // Create and configure the camera for the game view
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false);
-        camera.zoom = 0.75f;
+        camera = new OrthographicCamera(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+
+
         font = game.getSkin().getFont("font"); // Get the font from the game's skin
         batch = game.getSpriteBatch(); //using sprite batch for renderig
         map = new Map(mapPath, elements);
+        viewport = new ScreenViewport(camera);
     }
 
     // Screen interface methods with necessary functionality
@@ -78,14 +80,8 @@ public class GameScreen implements Screen {
         ScreenUtils.clear(0, 0, 0, 1); // Clear the screen
 
         camera.update(); // Update the camera
+        batch.setProjectionMatrix(viewport.getCamera().combined);
 
-        // Move text in a circular path to have an example of a moving object
-        //sinusInput += delta;
-        //float textX = (float) (camera.position.x + Math.sin(sinusInput) * 100);
-        //float textY = (float) (camera.position.y + Math.cos(sinusInput) * 100);
-
-        // Set up and begin drawing with the sprite batch
-        game.getSpriteBatch().setProjectionMatrix(camera.combined);
 
         //movment controls
 
@@ -98,7 +94,6 @@ public class GameScreen implements Screen {
         // Draw the character next to the text :) / We can reuse sinusInput here
         // looping true makes our character have the leg walking animation
         // Time variables for each direction
-
         //game.getSpriteBatch().end(); // Important to call this after drawing everything
     }
 
