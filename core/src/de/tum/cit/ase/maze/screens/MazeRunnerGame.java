@@ -1,5 +1,4 @@
 package de.tum.cit.ase.maze.screens;
-
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
@@ -18,7 +17,7 @@ import games.spooky.gdx.nativefilechooser.NativeFileChooser;
 public class MazeRunnerGame extends Game {
     // Screens
     private MenuScreen menuScreen;
-
+    private GameScreen gameScreen;
 
     // Sprite Batch for rendering
     private SpriteBatch spriteBatch;
@@ -73,12 +72,13 @@ public class MazeRunnerGame extends Game {
     /**
      * Switches to the game screen.
      */
-    public void goToGame() {
-        this.setScreen(new GameScreen(this)); // Set the current screen to GameScreen
-        if (menuScreen != null) {
-            menuScreen.dispose(); // Dispose the menu screen if it exists
-            menuScreen = null;
-        }
+    public void goToGame(String mapPath, int score, int time) {
+        gameScreen = new GameScreen(this, mapPath, score, time);
+        this.setScreen(gameScreen);
+    }
+    //load game method which uses native file chooser to load in a map from a.properties file
+    public void loadGame(){
+
     }
 
     /**
@@ -148,12 +148,4 @@ public class MazeRunnerGame extends Game {
     }
 
     NativeFileChooser fileChooser;
-
-    /**
-     * Sets the screen to the GameScreen with the provided maze data.
-     *
-     * @param mazeData The maze data to be used in the game.
-     */
-
-
-}
+    }
