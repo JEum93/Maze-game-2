@@ -1,17 +1,13 @@
-package de.tum.cit.ase.maze;
+package de.tum.cit.ase.maze.game;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import de.tum.cit.ase.maze.SpriteSheet;
+import de.tum.cit.ase.maze.utils.SpriteSheet;
 
-import javax.swing.text.Element;
 import javax.swing.text.html.parser.Entity;
 import java.io.FileInputStream;
 import java.util.*;
-
-import static com.badlogic.gdx.scenes.scene2d.ui.Table.Debug.cell;
-import static de.tum.cit.ase.maze.CellType.*;
 
 public class Map {
     private int rows; // rows and columns for the size of our map grid

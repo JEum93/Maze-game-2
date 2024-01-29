@@ -1,4 +1,4 @@
-package de.tum.cit.ase.maze;
+package de.tum.cit.ase.maze.screens;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -18,7 +18,7 @@ import games.spooky.gdx.nativefilechooser.NativeFileChooser;
 public class MazeRunnerGame extends Game {
     // Screens
     private MenuScreen menuScreen;
-    private GameScreen gameScreen;
+
 
     // Sprite Batch for rendering
     private SpriteBatch spriteBatch;
